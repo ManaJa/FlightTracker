@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Flight Tracker";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Flight Tracker</h2>
+<select id="ddAirport" onchange="refreshData(this)">
+	@foreach (var track in ViewBag.FlightTracks) { 
+		<option origin="@track.OriginPort" dest="@track.DestinationPort">@track.PortPair</option>
+	}
+</select>
+<button type="button" onclick="refreshData(this)">Refresh</button> 
+
+<div><span style="font-size:large;">Origin Airport :</span><span id="originInfoNode">loading...</span></div>
+<div><span style="font-size:large;">Destination Airport :</span><span id="destinInfoNode">loading...</span></div>
+<hr />
+<div id="map-canvas">Flight tracker map loading...</div>
+
+<script type="text/javascript">
+	window.preloadTracks = @Html.Raw(@ServiceStack.Text.JsonSerializer.SerializeToString(ViewBag.FlightTracks));
+	window.preloadAirPortInfos = @Html.Raw(@ServiceStack.Text.JsonSerializer.SerializeToString(ViewBag.AirportInfos));
+
+	window.refreshData = function(e){
+		$('#ddAirport').each(function(index, elem){
+			$.each(elem.selectedOptions, function(index2, elem2){
+				var origin = elem2.attributes['origin'].value;
+				var dest  = elem2.attributes['dest'].value;
+				displayOrigin(origin);
+				displayDestin(dest);
+			});
+		});
+	};
+
+	window.displayOrigin = function(code){
+		$.getJSON('api/airportinfo/'+ code)
+		.done(function(data) {
+			console.log( data );
+			displayInfomation($('#originInfoNode')[0], data);
+
+		})
+		.fail(function(e) {
+			console.log(e);
+			$('#originInfoNode')[0].innerHTML = "loading error...";
+		});
+		$('#originInfoNode')[0].innerHTML = "loading...";
+	};
+
+	window.displayDestin = function(code){
+		$.getJSON('api/airportinfo/'+ code)
+		.done(function(data) {
+			console.log( data );
+			displayInfomation($('#destinInfoNode')[0], data);
+		})
+		.fail(function(e) {
+			console.log(e);
+			$('#destinInfoNode')[0].innerHTML = "loading error...";
+		});	
+		$('#destinInfoNode')[0].innerHTML = "loading...";
+	};
+
+	window.displayInfomation = function(node, data){
+		node.innerHTML = JSON.stringify(data);
+	}
+	
+</script>
+
+@section DocumentReady {
+		window.refreshData();
+}
+@section GoogleMap {
+<script type="text/javascript">
+	var map;
+	function initialize() {
+		var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+		var mapOptions = {
+			zoom: 4,
+			center: myLatlng
+		}
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+		var marker = new google.maps.Marker({
+			position: myLatlng,
+			map: map,
+			title: 'Hello World!'
+		});
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);	
+</script>	
+}

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FlightTrackerDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="FlightTrackerDBModelStoreContainer">
+    <EntitySet Name="AirPorts" EntityType="FlightTrackerDBModel.Store.AirPorts" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="AirPorts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="OriginPort" Type="nchar" MaxLength="10" />
+    <Property Name="DestinationPort" Type="nchar" MaxLength="10" />
+    <Property Name="PortPair" Type="nchar" MaxLength="10" />
+  </EntityType>
+</Schema>
