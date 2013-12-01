@@ -1,0 +1,7 @@
+bin/
+obj/
+*.cache
+*.user
+*.suo
+visual studio 2012
+Visual Studio 2012Templates
