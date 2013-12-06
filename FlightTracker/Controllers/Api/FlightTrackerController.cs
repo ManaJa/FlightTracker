@@ -9,11 +9,15 @@ namespace FlightTracker.Controllers.Api
 {
     public class AirPortInfoController : ApiController
     {
-		Provider.AirportInfoProvider airPortprovider = new Provider.AirportInfoProvider();
-		
+		Provider.IAirportInfoProvider _AirPortprovider;// = new Provider.AirportInfoProvider();
+
+        public AirPortInfoController(Provider.IAirportInfoProvider provider) {
+            _AirPortprovider = provider;
+        }
+
         public dynamic Get(string id)
         {
-			return airPortprovider.GetAirportInfo(id);
+			return _AirPortprovider.GetAirportInfo(id);
         }
 
     }

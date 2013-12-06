@@ -24,24 +24,6 @@ namespace FlightTracker.Provider
 				var deserializer = new System.Runtime.Serialization.DataContractSerializer(typeof(T));
 				return (T)deserializer.ReadObject(stream);
 			}
-
-			//var serializer = new System.Runtime.Serialization.DataContractSerializer(typeof(T));
-			//using (var reader = new MemoryStream(System.Text.Encoding.Default.GetBytes(xmlString)))
-			//{
-			//	return (T)serializer.ReadObject(reader);
-			//}
 		}
-
-		public static T ToObject<T>(this string @this)
-		{
-			if (@this == null) return default(T);
-
-			//@this = "<?xml version=\"1.0\"?>" + @this;
-
-			System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(T));
-			
-			var reader = new StringReader(@this);
-			return (T)x.Deserialize(reader);
-		} 
 	}
 }

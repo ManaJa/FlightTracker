@@ -10,13 +10,13 @@ using System.Xml.Serialization;
 
 namespace FlightTracker.Provider
 {
-	public class FlightTrackerProvider
+	public class FlightTrackerProvider : FlightTracker.Provider.IFlightTrackerProvider
 	{
-		private FlightTrackerDBEntities _DataQuery;
+		private Services.IFlightTrackService _Service;
 
-		public FlightTrackerProvider(){
-			_DataQuery = new FlightTrackerDBEntities();
-			_DataQuery.AirPorts = _DataQuery.Set<AirPort>();
+        public FlightTrackerProvider(Services.IFlightTrackService service)
+        {
+            _Service = service;
 		}
 
 		/// <summary>
@@ -25,7 +25,7 @@ namespace FlightTracker.Provider
 		/// <returns></returns>
 		public IEnumerable<Entity.FlightTrackEntity> GetFlightTracks() {
 
-			var airPorts = _DataQuery.AirPorts.ToList();
+			var airPorts = _Service.GetAirPortList();
 
 			return airPorts.Select(airport => new Entity.FlightTrackEntity {
 													OriginPort = airport.OriginPort.Trim(),

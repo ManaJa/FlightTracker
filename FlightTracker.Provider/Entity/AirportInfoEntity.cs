@@ -15,17 +15,37 @@ namespace FlightTracker.Provider.Entity
 		public string Country {get;set;}//Australia
 		public string CountryAbbrviation {get;set;}//AU
 		public int CountryCode {get;set;}//802
-		public int GMTOffset {get;set;}//-10
+		public float GMTOffset {get;set;}//-10
 		public int RunwayLengthFeet {get;set;}//11483
 		public int RunwayElevationFeet {get;set;}//13
 		public int LatitudeDegree {get;set;}//27
 		public int LatitudeMinute {get;set;}//28
 		public int LatitudeSecond {get;set;}//0
 		public string LatitudeNpeerS {get;set;}//S
-		public int LongitudeDegree {get;set;}//153
-		public int LongitudeMinute {get;set;}//2
-		public int LongitudeSeconds {get;set;}//0
-		public string LongitudeEperW {get;set;}//E
+		public int LongtitudeDegree {get;set;}//153
+		public int LongtitudeMinute {get;set;}//2
+		public int LongtitudeSeconds {get;set;}//0
+		public string LongtitudeEperW {get;set;}//E
+
+        public decimal LatitudeDecimalDegree
+        {
+            get
+            {
+                //Decimal Degrees = Degrees + minutes/60 + seconds/3600
+                var absDegree = Math.Abs(LatitudeDegree + LatitudeMinute / 60 + LatitudeSecond / 3600);
+                return LatitudeNpeerS == "N" ? absDegree : -absDegree;
+            }
+        }
+        public decimal LongtitudeDecimalDegree
+        {
+            get
+            {
+                //Decimal Degrees = Degrees + minutes/60 + seconds/3600
+                var absDegree = Math.Abs(LongtitudeDegree + LongtitudeMinute / 60 + LongtitudeSeconds / 3600);
+                return LongtitudeEperW == "E" ? absDegree : -absDegree;
+            }
+        }
+    
 	}
 
 
@@ -44,7 +64,7 @@ namespace FlightTracker.Provider.Entity
 		[DataMember(Name = "CountryCode", Order = 5)]
 		public int CountryCode { get; set; }//802
 		[DataMember(Name = "GMTOffset", Order = 6)]
-		public int GMTOffset { get; set; }//-10
+		public float GMTOffset { get; set; }//-10
 		[DataMember(Name = "RunwayLengthFeet", Order = 7)]
 		public int RunwayLengthFeet { get; set; }//11483
 		[DataMember(Name = "RunwayElevationFeet", Order = 8)]
@@ -68,7 +88,7 @@ namespace FlightTracker.Provider.Entity
 
 	}
 
-	internal static class AirPortEntityEntension {
+	internal static class AirPortEntityExtension {
 
 		internal static AirportInfoEntity ToEntity(this AirportInfoTableServiceObject @this)
 		{
@@ -86,12 +106,14 @@ namespace FlightTracker.Provider.Entity
 				LatitudeMinute = @this.LatitudeMinute,
 				LatitudeSecond = @this.LatitudeSecond,
 				LatitudeNpeerS = @this.LatitudeNpeerS,
-				LongitudeDegree = @this.LongitudeDegree,
-				LongitudeMinute = @this.LongitudeMinute,
-				LongitudeSeconds = @this.LongitudeSeconds,
-				LongitudeEperW = @this.LongitudeEperW,
+				LongtitudeDegree = @this.LongitudeDegree,
+				LongtitudeMinute = @this.LongitudeMinute,
+				LongtitudeSeconds = @this.LongitudeSeconds,
+				LongtitudeEperW = @this.LongitudeEperW,
 			};
 		}
 	}
+
+   
 
 }

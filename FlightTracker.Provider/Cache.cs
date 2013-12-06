@@ -7,32 +7,42 @@ using System.Threading.Tasks;
 
 namespace FlightTracker.Provider
 {
-	public class Cache
+	public class Cache : FlightTracker.Provider.ICache
 	{
-		public string Name {get;private set;}
+        private ObjectCache _Cache = null;
+        public Cache() {
+            _Cache = MemoryCache.Default;
+        }
 
-		public Cache(string name) {
-			Name = name;
-		}
+		public string Name {get; set;}
+        public bool Disable { get; set; }
 
 		public T GetCache<T>(string key)
 		{
+            if (Disable) return default(T);
+
 			if(string.IsNullOrEmpty(key)) return default(T);
-			return (T)MemoryCache.Default[Name + key];
+            return (T)_Cache[Name + key];
 		}
 		public void SetCache(string key, object obj)
 		{
-			MemoryCache.Default[Name + key] = obj;
+            if (Disable) return;
+
+            _Cache[Name + key] = obj;
 		}
 
 		public bool HasCache(string key)
 		{
-			return MemoryCache.Default[Name + key] != null;
+            if (Disable) return false;
+
+            return _Cache[Name + key] != null;
 		}
 
 		public void ClearCache(string key)
 		{
-			MemoryCache.Default.Remove(Name + key);
+            if (Disable) return;
+
+            _Cache.Remove(Name + key);
 		}
 	}
 }

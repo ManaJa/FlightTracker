@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Bootstrap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bootstrap</h2>
+<h5>* Please wait... <br/>
+      This page will display at the first application started only to ensure all data are ready and it will automatically redirect to reference page when finished.
+    </h5>
+<table>
+    <tr>
+        <td width="170px">Time</td>
+        <td>Status</td>
+    </tr>
+     @for (int i = this.Model.Count-1; i > 0; i--)
+     {
+        <tr>
+            <td>@(this.Model[i].TimeStamp)</td>
+            <td>@(this.Model[i].Status)</td>
+        </tr>        
+     }   
+
+</table>
+
+@section HeadMeta{
+    @{
+        if (!FlightTracker.Controllers.Bootstrap.IsCompleted) { 
+            <meta http-equiv="refresh" content="10">    
+        }
+    }
+    
+}

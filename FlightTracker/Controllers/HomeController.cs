@@ -9,15 +9,23 @@ namespace FlightTracker.Controllers
 {
     public class HomeController : Controller
     {
-		Provider.FlightTrackerProvider flightTrackProvider = new Provider.FlightTrackerProvider();
-		Provider.AirportInfoProvider airportInfoProvider = new Provider.AirportInfoProvider();
+        //Provider.FlightTrackerProvider flightTrackProvider = new Provider.FlightTrackerProvider();
+        //Provider.AirportInfoProvider airportInfoProvider = new Provider.AirportInfoProvider();
+
+        Provider.IFlightTrackerProvider flightTrackProvider;
+        Provider.IAirportInfoProvider airportInfoProvider;
+
+        public HomeController(Provider.IFlightTrackerProvider flightTrack, Provider.IAirportInfoProvider airportInfo) {
+            flightTrackProvider = flightTrack;
+            airportInfoProvider = airportInfo;
+        }
 
         //
         // GET: /Home/
         public ActionResult Index()
-        {
+        {  
 			var flightTracks = flightTrackProvider.GetFlightTracks();
-			var airportInfos = GetAvailableAirportInforsFromTrack(flightTracks.Take(2));
+			var airportInfos = GetAvailableAirportInforsFromTrack(flightTracks);
 
 			ViewBag.FlightTracks = flightTracks;
 			ViewBag.AirportInfos = airportInfos;
@@ -27,30 +35,16 @@ namespace FlightTracker.Controllers
 
 		private IEnumerable<Provider.Entity.AirportInfoEntity> GetAvailableAirportInforsFromTrack(IEnumerable<Provider.Entity.FlightTrackEntity> tracks) {
 
-			var uniqueAirportCodes = GetUniqueAirportCodes(tracks);
+            var uniqueAirportCodes = tracks.Select(t => t.OriginPort)
+                            .Union(tracks.Select(t => t.DestinationPort))
+                            .Distinct();
 
 			foreach (var code in uniqueAirportCodes)
 			{
-				airportInfoProvider.GetAirportInfoBackground(code);
+				var airportInfo = airportInfoProvider.GetAirportInfoCache(code);
+                if(airportInfo!=null)
+                yield return airportInfo;
 			}
-
-			////wait for all background process
-			//while (airportInfoProvider.IsAirportInfoRequesting()) { }
-
-			//foreach (var code in uniqueAirportCodes)
-			//{
-			//	yield return airportInfoProvider.GetAirportInfo(code);
-			//}
-			return Enumerable.Empty<Provider.Entity.AirportInfoEntity>();
-		}
-
-		private string[] GetUniqueAirportCodes(IEnumerable<Provider.Entity.FlightTrackEntity> tracks)
-		{
-			var uniqueAirportCodes = tracks.Select(t => t.OriginPort)
-							.Union(tracks.Select(t => t.DestinationPort))
-							.Distinct();
-
-			return uniqueAirportCodes.ToArray();
 		}
     }
 }

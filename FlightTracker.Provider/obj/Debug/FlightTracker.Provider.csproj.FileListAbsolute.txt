@@ -6,3 +6,11 @@ D:\Projects\FlightTracker\FlightTracker.Provider\bin\Debug\EntityFramework.xml
 D:\Projects\FlightTracker\FlightTracker.Provider\obj\Debug\FlightTracker.Provider.dll
 D:\Projects\FlightTracker\FlightTracker.Provider\obj\Debug\FlightTracker.Provider.pdb
 D:\Projects\FlightTracker\FlightTracker.Provider\obj\Debug\FlightTracker.Provider.csprojResolveAssemblyReference.cache
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\obj\Debug\FlightTracker.Provider.csprojResolveAssemblyReference.cache
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\obj\Debug\FlightTracker.Provider.dll
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\obj\Debug\FlightTracker.Provider.pdb
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\bin\Debug\FlightTracker.Provider.dll.config
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\bin\Debug\FlightTracker.Provider.dll
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\bin\Debug\FlightTracker.Provider.pdb
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\bin\Debug\EntityFramework.dll
+C:\_WorkZone\Projects\FlightTracker\FlightTracker\FlightTracker.Provider\bin\Debug\EntityFramework.xml

@@ -18,6 +18,7 @@ namespace FlightTracker
 		protected void Application_Start()
 		{
 			AreaRegistration.RegisterAllAreas();
+        
 
 			WebApiConfig.Register(GlobalConfiguration.Configuration);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -26,6 +27,22 @@ namespace FlightTracker
 			
 			JsConfig.EmitCamelCaseNames = true;
 
+            Bootstrapper.Initialise();
+
+
 		}
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            if (!HttpContext.Current.Request.Path.Contains("Bootstrap"))
+                if (!FlightTracker.Controllers.Bootstrap.IsCompleted)
+                {
+                    Response.Redirect("~/Bootstrap?ref=" + HttpContext.Current.Request.Path);
+                }
+
+        }
 	}
+
+
+
 }
