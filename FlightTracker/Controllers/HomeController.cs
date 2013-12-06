@@ -33,7 +33,7 @@ namespace FlightTracker.Controllers
 			return View();
         }
 
-		private IEnumerable<Provider.Entity.AirportInfoEntity> GetAvailableAirportInforsFromTrack(IEnumerable<Provider.Entity.FlightTrackEntity> tracks) {
+		public IEnumerable<Provider.Entity.AirportInfoEntity> GetAvailableAirportInforsFromTrack(IEnumerable<Provider.Entity.FlightTrackEntity> tracks) {
 
             var uniqueAirportCodes = tracks.Select(t => t.OriginPort)
                             .Union(tracks.Select(t => t.DestinationPort))
